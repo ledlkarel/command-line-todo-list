@@ -1,0 +1,1 @@
+["^ ","~$a-test",["^ ","~:row",5,"~:col",1,"~:fixed-arities",["~#set",[0]],"~:name","^0","~:ns","~$command-line-todo-list.core-test","~:top-ns","^7","~:arities",["^ ","~i0",["^ ","~:ret","~:boolean","~:arglist-str","[]"]]],"~:filename","/Users/karelledl/Projekt/clojure-learning/command-line-todo-list/test/command_line_todo_list/core_test.clj"]
