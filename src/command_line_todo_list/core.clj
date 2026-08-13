@@ -1,6 +1,8 @@
 (ns command-line-todo-list.core
   (:gen-class))
 
+(def tasks (atom []))
+
 (defn menu
   "Menu visualisation"
   []
@@ -13,23 +15,28 @@
   (println "4. Delete Task")
   (println "5. Quit"))
 
-(defn selector
+(defn menu-selector
   "Menu selector"
   [input]
   (cond
-    (= input "1") (println "New Task")
-    (= input "2") (println "View Tasks")
-    (= input "3") (println "Compelte Task")
-    (= input "4") (println "Delete Task")
-    (= input "5") (println "Quit")
-    :else (println "Input not supperted")))
+    (= input "1") (println "New Task\n")
+    (= input "2") (println "View Tasks\n")
+    (= input "3") (println "Compelte Task\n")
+    (= input "4") (println "Delete Task\n")
+    (= input "5") (println "Quit\n")
+    :else (println "Input not supperted\n")))
+
+(defn new-line []
+  (println "\n"))
 
 (defn -main
-  []
-  (def quit-input (atom "0"))
-  (while (not= @quit-input "5")
-    (menu)
-    (def input (read-line))
-    (selector input)
-    (reset! quit-input input)))
+  [] 
+  (let [quit-input (atom "0")] 
+    (while (not= @quit-input "5")
+      (menu)
+      (new-line)
+      (let [input (read-line)]
+        (new-line)
+        (menu-selector input)
+        (reset! quit-input input)))))
 
