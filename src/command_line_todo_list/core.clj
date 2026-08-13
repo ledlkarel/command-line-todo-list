@@ -3,11 +3,24 @@
 
 (def tasks (atom []))
 
-(defn new-task []
+(defn new-task
+  "Creating a new task"
+  []
   (println "Name of task:")
   (let [task-name (read-line)]
     (swap! tasks conj {:name task-name :complete false}))
   (println "Task added!"))
+
+(defn view-tasks
+  "Display all tasks"
+  []
+  (println "Tasks:") 
+  (doseq [[index item] (map-indexed vector @tasks)] 
+    (println 
+     index"." (get item :name)
+     (if 
+      (= (get item :complete) false) "✗" "✓"))))
+
 
 (defn menu
   "Menu visualisation"
@@ -26,7 +39,7 @@
   [input]
   (cond
     (= input "1") (new-task)
-    (= input "2") (println "View Tasks\n")
+    (= input "2") (view-tasks)
     (= input "3") (println "Compelte Task\n")
     (= input "4") (println "Delete Task\n")
     (= input "5") (println "Quit\n")
