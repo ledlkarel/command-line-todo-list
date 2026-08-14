@@ -23,7 +23,7 @@
   (println "Tasks:")
   (doseq [[index item] (map-indexed vector @tasks)]
     (println
-     index "." (get item :name)
+     index "-" (get item :name)
      (if
       (= (get item :complete) false) "✗" "✓"))))
 
@@ -33,10 +33,19 @@
   (view-tasks)
   (new-line)
   (let [input (parse-int (read-line))]
-    (println (type input))
     (swap! tasks update input assoc :complete true))
   (println "Task completed!"))
 
+(defn delete-task
+  "Delete task"
+  []
+  (view-tasks)
+  (new-line)
+  (let [input (parse-int (read-line))]
+    (swap! tasks (fn [coll]
+      (concat (subvec coll 0 input)
+              (subvec coll (inc input))))))
+  (println "Task deleted!"))
 
 (defn menu
   "Menu visualisation"
@@ -57,7 +66,7 @@
     (= input "1") (new-task)
     (= input "2") (view-tasks)
     (= input "3") (complete-task)
-    (= input "4") (println "Delete Task\n")
+    (= input "4") (delete-task)
     (= input "5") (println "Quit\n")
     :else (println "Input not supperted\n")))
 
