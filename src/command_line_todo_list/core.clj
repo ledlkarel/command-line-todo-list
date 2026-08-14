@@ -1,5 +1,6 @@
 (ns command-line-todo-list.core
   (:gen-class))
+(use 'clojure.java.io)
 
 (def tasks (atom []))
 
@@ -9,12 +10,19 @@
 (defn parse-int [s]
   (Integer. (re-find  #"\d+" s)))
 
+(defn write-file
+  "Write to file"
+  []
+  (with-open [wrtr (writer "tasks.txt")]
+    (.write wrtr (str @tasks))))
+
 (defn new-task
   "Create new task"
   []
   (println "Name of task:")
   (let [task-name (read-line)]
     (swap! tasks conj {:name task-name :complete false}))
+  (write-file)
   (println "Task added!"))
 
 (defn view-tasks
@@ -35,6 +43,7 @@
   (try
     (let [input (parse-int (read-line))]
       (swap! tasks update input assoc :complete true)
+      (write-file)
       (println "Task completed!"))
     (catch Exception e (println "Number of task doesnt exist"))))
 
@@ -46,8 +55,9 @@
   (try
     (let [input (parse-int (read-line))]
       (swap! tasks (fn [coll]
-                     (concat (subvec coll 0 input)
-                             (subvec coll (inc input))))))
+                     (into [] (concat (subvec coll 0 input)
+                                      (subvec coll (inc input)))))))
+    (write-file)
     (println "Task deleted!")
     (catch Exception e (println "Number of task doesnt exist"))))
 
