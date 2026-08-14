@@ -32,20 +32,24 @@
   []
   (view-tasks)
   (new-line)
-  (let [input (parse-int (read-line))]
-    (swap! tasks update input assoc :complete true))
-  (println "Task completed!"))
+  (try
+    (let [input (parse-int (read-line))]
+      (swap! tasks update input assoc :complete true)
+      (println "Task completed!"))
+    (catch Exception e (println "Number of task doesnt exist"))))
 
 (defn delete-task
   "Delete task"
   []
   (view-tasks)
   (new-line)
-  (let [input (parse-int (read-line))]
-    (swap! tasks (fn [coll]
-      (concat (subvec coll 0 input)
-              (subvec coll (inc input))))))
-  (println "Task deleted!"))
+  (try
+    (let [input (parse-int (read-line))]
+      (swap! tasks (fn [coll]
+                     (concat (subvec coll 0 input)
+                             (subvec coll (inc input))))))
+    (println "Task deleted!")
+    (catch Exception e (println "Number of task doesnt exist"))))
 
 (defn menu
   "Menu visualisation"
