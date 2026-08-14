@@ -5,15 +5,21 @@
 
 (def tasks (atom []))
 
-(defn read-file [] 
+(defn read-file 
+  "Read from a file"
+  [] 
    (try
      (reset! tasks (or (edn/read-string (slurp "tasks.txt")) []))
      (catch Exception e ())))
 
-(defn new-line []
+(defn new-line 
+  "Create a new line"
+  []
   (println "\n"))
 
-(defn parse-int [s]
+(defn parse-int
+  "Convert first number in a string in to a int"
+  [s]
   (Integer. (re-find  #"\d+" s)))
 
 (defn write-file
