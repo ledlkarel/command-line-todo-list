@@ -83,7 +83,7 @@
   (println "2. View Tasks")
   (println "3. Complete Task")
   (println "4. Delete Task")
-  (println "5. Quit"))
+  (println "5. Quit!"))
 
 (defn menu-selector
   "Menu selector"
