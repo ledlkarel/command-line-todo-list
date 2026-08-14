@@ -3,8 +3,14 @@
 
 (def tasks (atom []))
 
+(defn new-line []
+  (println "\n"))
+
+(defn parse-int [s]
+  (Integer. (re-find  #"\d+" s)))
+
 (defn new-task
-  "Creating a new task"
+  "Create new task"
   []
   (println "Name of task:")
   (let [task-name (read-line)]
@@ -14,12 +20,22 @@
 (defn view-tasks
   "Display all tasks"
   []
-  (println "Tasks:") 
-  (doseq [[index item] (map-indexed vector @tasks)] 
-    (println 
-     index"." (get item :name)
-     (if 
+  (println "Tasks:")
+  (doseq [[index item] (map-indexed vector @tasks)]
+    (println
+     index "." (get item :name)
+     (if
       (= (get item :complete) false) "✗" "✓"))))
+
+(defn complete-task
+  "Compelet task"
+  []
+  (view-tasks)
+  (new-line)
+  (let [input (parse-int (read-line))]
+    (println (type input))
+    (swap! tasks update input assoc :complete true))
+  (println "Task completed!"))
 
 
 (defn menu
@@ -30,7 +46,7 @@
   (println "\n")
   (println "1. New Task")
   (println "2. View Tasks")
-  (println "3. Compelte Task")
+  (println "3. Complete Task")
   (println "4. Delete Task")
   (println "5. Quit"))
 
@@ -40,13 +56,10 @@
   (cond
     (= input "1") (new-task)
     (= input "2") (view-tasks)
-    (= input "3") (println "Compelte Task\n")
+    (= input "3") (complete-task)
     (= input "4") (println "Delete Task\n")
     (= input "5") (println "Quit\n")
     :else (println "Input not supperted\n")))
-
-(defn new-line []
-  (println "\n"))
 
 (defn -main
   []
