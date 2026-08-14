@@ -1,8 +1,14 @@
 (ns command-line-todo-list.core
-  (:gen-class))
+  (:gen-class)
+  (:require [clojure.edn :as edn]))
 (use 'clojure.java.io)
 
 (def tasks (atom []))
+
+(defn read-file [] 
+   (try
+     (reset! tasks (or (edn/read-string (slurp "tasks.txt")) []))
+     (catch Exception e ())))
 
 (defn new-line []
   (println "\n"))
@@ -86,6 +92,7 @@
 
 (defn -main
   []
+  (read-file)
   (let [quit-input (atom "0")]
     (while (not= @quit-input "5")
       (menu)
